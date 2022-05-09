@@ -1,0 +1,105 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script>
+		function buscaMSG () {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					var oJSON = JSON.parse(this.responseText);
+					document.getElementById("nomb").value = oJSON.nom;
+					document.getElementById("apel").value = oJSON.apel;
+					document.getElementById("email").value = oJSON.email;
+					document.getElementById("profe").value = oJSON.profe;
+				}
+			}
+			xhttp.open("GET", "get_ins.php?cd=" + document.getElementById("cod").value, true);
+			xhttp.send();
+		}
+		function eliminaMSG () {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					document.write(this.responseText);
+				}
+			}
+			//xhttp.open("GET", "delete_mensaje.php?cd=" + document.getElementById("cod").value, true);
+			//xhttp.send();
+			
+			xhttp.open("POST", "delete_ins.php", true);
+			xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			xhttp.send("cd=" + document.getElementById("cod").value);
+		}
+		function enviarMSG() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					document.write(this.responseText);
+				}
+			}
+			var pars = "nm=" + document.getElementById("nomb").value + "&";
+			pars = pars + "ap=" + document.getElementById("apel").value + "&";
+			pars = pars + "em=" + document.getElementById("email").value + "&";
+			pars = pars + "pr=" + document.getElementById("profe").value;
+			xhttp.open("GET", "graba_ins.php?" + pars, true);
+			xhttp.send();
+		}
+		function muestraMSG() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					document.write(this.responseText);
+				}
+			}
+			xhttp.open("GET", "lista_ins.php", true);
+			xhttp.send();
+		}
+		function actualizaMSG() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					document.write(this.responseText);
+				}
+			}
+			var pars = "cd=" + document.getElementById("cod").value + "&";
+			pars = pars + "nm=" + document.getElementById("nomb").value + "&";
+			pars = pars + "ap=" + document.getElementById("apel").value + "&";
+			pars = pars + "em=" + document.getElementById("email").value + "&";
+			pars = pars + "pr=" + document.getElementById("profe").value;
+			xhttp.open("GET", "actualiza_ins.php?" + pars, true);
+			xhttp.send();
+		}
+	</script>
+</head>
+<body bgcolor="AAAAAA">
+<h1> Inscripciones a Clases </h1>
+	
+	<table>
+		<tr><td>Nombre: <td> <input type="text" id="nomb"> <br/>
+		<tr><td>Apellido: <td> <input type="text" id="apel"> <br/>
+		<tr><td>Email: <td> <input type="text" id="email"> <br/>
+		<tr><td>Profesor: <td> <select id="profe">
+					<option> Diego </option>
+					<option> Karen </option>
+					<option> Harvey </option>
+					<option> Jose </option>
+					<option> Eliana </option>
+					<option> Horus </option>
+					<option> Shirley </option>
+					<option> Argenis </option>
+					
+				</select> <br/>
+	</table>
+	<button onclick="enviarMSG()"> Inscribirse </button>
+	
+	
+	<br><br><br>
+	Código: <input type="text" name="cod" id="cod">
+	<button onclick="buscaMSG()"> Buscar </button>
+	<br>
+	<button onclick="eliminaMSG()"> Eliminar </button>
+	<button onclick="actualizaMSG()"> Actualizar </button>
+	<button onclick="muestraMSG()"> Mostrar inscritos</button>
+	<p id="txt"> </p>
+</body>
+</html>

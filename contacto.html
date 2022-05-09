@@ -1,0 +1,79 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script>
+		function buscaMSG () {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					var oJSON = JSON.parse(this.responseText);
+					document.getElementById("nomb").value = oJSON.nom;
+					document.getElementById("apel").value = oJSON.apel;
+					document.getElementById("email").value = oJSON.email;
+					document.getElementById("msg").value = oJSON.msg;
+				}
+			}
+			xhttp.open("GET", "get_msg.php?cd=" + document.getElementById("cod").value, true);
+			xhttp.send();
+		}
+		function eliminaMSG () {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					document.write(this.responseText);
+				}
+			}
+			//xhttp.open("GET", "delete_mensaje.php?cd=" + document.getElementById("cod").value, true);
+			//xhttp.send();
+			
+			xhttp.open("POST", "delete_mensaje.php", true);
+			xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			xhttp.send("cd=" + document.getElementById("cod").value);
+		}
+		function enviarMSG() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					document.write(this.responseText);
+				}
+			}
+			var pars = "nm=" + document.getElementById("nomb").value + "&";
+			pars = pars + "ap=" + document.getElementById("apel").value + "&";
+			pars = pars + "em=" + document.getElementById("email").value + "&";
+			pars = pars + "ms=" + document.getElementById("msg").value;
+			xhttp.open("GET", "graba_mensaje.php?" + pars, true);
+			xhttp.send();
+		}
+		function muestraMSG() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState==4 && this.status==200) {
+					document.write(this.responseText);
+				}
+			}
+			xhttp.open("GET", "lista_msgs.php", true);
+			xhttp.send();
+		}
+	</script>
+</head>
+<body bgcolor="AAAAAA">
+<h1> Contáctate con Nosotros </h1>
+	
+	<table>
+		<tr><td>Nombre: <td> <input type="text" id="nomb"> <br/>
+		<tr><td>Apellido: <td> <input type="text" id="apel"> <br/>
+		<tr><td>Email: <td> <input type="text" id="email"> <br/>
+		<tr><td>Mensaje: <td> <input type="textArea" id="msg" width="10%"> <br/>
+	</table>
+	<button onclick="enviarMSG()"> Enviar </button>
+	
+	
+	<br><br><br>
+	Código: <input type="text" name="cod" id="cod">
+	<button onclick="buscaMSG()"> Buscar </button>
+	<br>
+	<button onclick="eliminaMSG()"> Eliminar </button>
+	<button onclick="muestraMSG()"> Mostrar Mensajes </button>
+	<p id="txt"> </p>
+</body>
+</html>
